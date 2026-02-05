@@ -121,13 +121,13 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               )}
 
-              <button
+              {/* <button
                 onClick={onOpenAI}
                 className="hidden sm:flex items-center gap-2 bg-[#0A7D3E]/10 text-[#0A7D3E] px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0A7D3E]/20 transition-colors"
               >
                 <Sparkles size={16} className="animate-pulse" />
                 <span>AI Shopper</span>
-              </button>
+              </button> */}
 
               {/* Wishlist */}
               <button
