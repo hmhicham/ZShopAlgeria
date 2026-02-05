@@ -1,0 +1,7 @@
+{
+  "name": "Copy of ShopHub Premium E-Commerce",
+  "description": "A high-end, AI-powered e-commerce experience featuring a modern UI, personal shopper assistant, and seamless cart management.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
