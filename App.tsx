@@ -184,31 +184,45 @@ export default function App() {
     const bootApp = async () => {
       log('System: Booting Application', null);
 
-      // Failsafe: Force loading state to false after 5 seconds max
-      const timeoutId = setTimeout(() => {
-        setIsInitialAuthCheck(false);
-        log('System: Auth Check Timeout - Forced Release', null, 'error');
-      }, 5000);
+      // 1. Start fetching global data immediately (parallel)
+      const dataFetchPromise = fetchGlobalData();
 
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          const profile = await fetchUserProfile(session.user);
-          setUser(profile);
-          if (profile.db_id) {
-            await fetchWishlist(profile.db_id);
+      // 2. Check Auth Session
+      const authPromise = (async () => {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            // Race the profile fetch against a timeout to prevent absolute hangs
+            const profilePromise = fetchUserProfile(session.user);
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Profile Timeout')), 3000));
+
+            try {
+              const profile = await Promise.race([profilePromise, timeoutPromise]) as User;
+              setUser(profile);
+              if (profile.db_id) fetchWishlist(profile.db_id);
+              log('System: User Identified', profile.email, 'success');
+            } catch (err) {
+              log('System: Profile fetch timed out or failed', err, 'error');
+              // Fallback user if profile DB call fails but session exists
+              setUser({
+                id: session.user.id,
+                name: session.user.user_metadata?.full_name || 'User',
+                email: session.user.email!,
+                role: session.user.user_metadata?.role || 'customer'
+              });
+            }
+          } else {
+            log('System: No Active Session', null);
           }
-          log('System: User Identified', profile.email, 'success');
-        } else {
-          log('System: No Active Session', null);
+        } catch (e: any) {
+          log('System: Auth Check Failed', e.message, 'error');
+        } finally {
+          setIsInitialAuthCheck(false);
         }
-      } catch (e: any) {
-        log('System: Boot Error', e.message, 'error');
-      } finally {
-        clearTimeout(timeoutId);
-        setIsInitialAuthCheck(false);
-        fetchGlobalData();
-      }
+      })();
+
+      // Wait for both but release initial check as soon as auth is ready
+      await Promise.allSettled([dataFetchPromise, authPromise]);
     };
 
     bootApp();
