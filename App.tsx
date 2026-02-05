@@ -4,7 +4,7 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ProductCard } from './components/ProductCard';
 import { CartDrawer } from './components/CartDrawer';
-import { AIShopper } from './components/AIShopper';
+//import { AIShopper } from './components/AIShopper';
 import { CheckoutView } from './components/CheckoutView';
 import { OrderHistoryView } from './components/OrderHistoryView';
 import { WishlistView } from './components/WishlistView';
@@ -798,7 +798,7 @@ export default function App() {
       <FloatingButtons />
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} items={cartItems} onUpdateQuantity={(id, d) => setCartItems(prev => prev.map(x => x.id === id ? { ...x, quantity: Math.max(1, x.quantity + d) } : x))} onRemove={id => setCartItems(prev => prev.filter(x => x.id !== id))} onCheckout={() => { setIsCartOpen(false); setView('checkout'); }} />
-      <AIShopper isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} products={products.filter(p => p.is_active)} />
+      {/*  <AIShopper isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} products={products.filter(p => p.is_active)} /> */}
 
       {/* Dev Diagnostics Overlay (Visible to Admins only) */}
       {user?.role === 'admin' && (
