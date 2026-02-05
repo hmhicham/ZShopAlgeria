@@ -80,11 +80,21 @@ export default function App() {
   const fetchUserProfile = async (sessionUser: any) => {
     log('Auth: Fetching User Profile', { email: sessionUser.email });
     try {
-      const { data: userData, error: userDbError } = await supabase
+      // 1. Create a promise for the database query
+      const dbQueryPromise = supabase
         .from('users')
         .select('*')
         .eq('email', sessionUser.email)
         .maybeSingle();
+
+      // 2. Create a 3-second timeout promise
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Profile Query Timeout')), 3000)
+      );
+
+      // 3. Race the query against the timeout
+      const result = await Promise.race([dbQueryPromise, timeoutPromise]) as any;
+      const { data: userData, error: userDbError } = result;
 
       if (userDbError) throw userDbError;
 
@@ -103,8 +113,10 @@ export default function App() {
         };
       }
     } catch (e: any) {
-      log('Auth: Profile Fetch Failed', e.message, 'error');
+      log('Auth: Profile Fetch Failed/Timed Out', e.message, 'error');
     }
+
+    // Fallback: Always return basic session info if DB fetch fails
     return {
       id: sessionUser.id,
       name: sessionUser.user_metadata?.full_name || 'User',
@@ -190,33 +202,27 @@ export default function App() {
       // 2. Check Auth Session
       const authPromise = (async () => {
         try {
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session?.user) {
-            // Race the profile fetch against a timeout to prevent absolute hangs
-            const profilePromise = fetchUserProfile(session.user);
-            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Profile Timeout')), 3000));
+          // Robust session check with timeout
+          const sessionPromise = supabase.auth.getSession();
+          const sessionTimeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Session Check Timeout')), 3000)
+          );
 
-            try {
-              const profile = await Promise.race([profilePromise, timeoutPromise]) as User;
-              setUser(profile);
-              if (profile.db_id) fetchWishlist(profile.db_id);
-              log('System: User Identified', profile.email, 'success');
-            } catch (err) {
-              log('System: Profile fetch timed out or failed', err, 'error');
-              // Fallback user if profile DB call fails but session exists
-              setUser({
-                id: session.user.id,
-                name: session.user.user_metadata?.full_name || 'User',
-                email: session.user.email!,
-                role: session.user.user_metadata?.role || 'customer'
-              });
-            }
+          const { data: { session } } = await Promise.race([sessionPromise, sessionTimeout]) as any;
+
+          if (session?.user) {
+            // fetchUserProfile now has internal timeout and fallback
+            const profile = await fetchUserProfile(session.user);
+            setUser(profile);
+            if (profile.db_id) fetchWishlist(profile.db_id);
+            log('System: User Identified', profile.email, 'success');
           } else {
             log('System: No Active Session', null);
           }
         } catch (e: any) {
-          log('System: Auth Check Failed', e.message, 'error');
+          log('System: Auth Check Failed/Timed Out', e.message, 'error');
         } finally {
+          // CRITICAL: Always release the loading screen
           setIsInitialAuthCheck(false);
         }
       })();
@@ -233,14 +239,16 @@ export default function App() {
         const profile = await fetchUserProfile(session.user);
         setUser(profile);
         if (profile.db_id) {
-          await fetchWishlist(profile.db_id);
+          await fetchWishlist(profile.db_id); // This will also use categories internally
         }
+        setIsInitialAuthCheck(false);
       } else {
         setUser(null);
         setWishlist([]);
         if (view.startsWith('admin-') || view === 'profile' || view === 'orders') {
           setView('home');
         }
+        setIsInitialAuthCheck(false);
       }
     });
 
