@@ -62,7 +62,10 @@ export const Hero: React.FC<HeroProps> = ({ content }) => {
                 onClick={() => {
                   const productGrid = document.getElementById('product-grid');
                   if (productGrid) {
-                    productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const rect = productGrid.getBoundingClientRect();
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const targetY = rect.top + scrollTop - 80;
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
                   }
                 }}
                 className="group relative bg-white text-[#003820] font-bold py-4 px-8 rounded-full hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 overflow-hidden"
