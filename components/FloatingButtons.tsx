@@ -20,7 +20,7 @@ export const FloatingButtons: React.FC = () => {
     };
 
     const openWhatsApp = () => {
-        window.open('https://wa.me/213555123456?text=Bonjour, je suis intéressé par vos produits!', '_blank');
+        window.open('https://wa.me/213555555500?text=Bonjour, je suis intéressé par vos produits!', '_blank');
     };
 
     return (

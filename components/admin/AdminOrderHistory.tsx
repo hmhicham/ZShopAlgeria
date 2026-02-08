@@ -44,73 +44,77 @@ export const AdminOrderHistory: React.FC<AdminOrderHistoryProps> = ({ orders, on
       </div>
 
       <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-100">
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Order Ref</th>
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Customer</th>
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Date</th>
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Total</th>
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Status</th>
-              <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50">
-            {filteredOrders.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="px-8 py-20 text-center">
-                  <div className="flex flex-col items-center gap-4 text-slate-400">
-                    <ShoppingBag size={48} className="opacity-20" />
-                    <p className="font-bold">No orders found matching "{searchTerm}"</p>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left min-w-[900px]">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-100">
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Order Ref</th>
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Customer</th>
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Date</th>
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Total</th>
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Status</th>
+                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
               </tr>
-            ) : (
-              filteredOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
-                  <td className="px-8 py-6">
-                    <span className="font-mono font-black text-indigo-600">#{order.order_number}</span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="flex flex-col">
-                      <span className="font-bold text-slate-900 truncate max-w-[150px]">{order.shipping_address}</span>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {filteredOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-8 py-20 text-center">
+                    <div className="flex flex-col items-center gap-4 text-slate-400">
+                      <ShoppingBag size={48} className="opacity-20" />
+                      <p className="font-bold">No orders found matching "{searchTerm}"</p>
                     </div>
                   </td>
-                  <td className="px-8 py-6">
-                    <span className="text-sm font-medium text-slate-500">{order.date}</span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <p className="text-2xl font-black text-indigo-600">{order.total.toLocaleString()} DZD</p>
-                  </td>
-                  <td className="px-8 py-6">
-                    <select
-                      value={order.status}
-                      onChange={(e) => onUpdateStatus(order.id, e.target.value as any)}
-                      className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border outline-none cursor-pointer transition-colors ${order.status === 'Delivered' ? 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100' :
-                        order.status === 'Shipped' ? 'bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100' :
-                          order.status === 'Cancelled' ? 'bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-100' :
-                            'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100'
-                        }`}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Shipped">Shipped</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                  <td className="px-8 py-6 text-right">
-                    <button
-                      onClick={() => setSelectedOrder(order)}
-                      className="p-2 text-slate-400 hover:text-indigo-600 transition-colors"
-                    >
-                      <Eye size={18} />
-                    </button>
-                  </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                filteredOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
+                    <td className="px-8 py-6">
+                      <span className="font-mono font-black text-indigo-600">#{order.order_number}</span>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className="flex flex-col">
+                        <span className="font-bold text-slate-900 truncate max-w-[150px]">{order.shipping_address}</span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <span className="text-sm font-medium text-slate-500">{order.date}</span>
+                    </td>
+                    <td className="px-8 py-6">
+                      <p className="text-2xl font-black text-indigo-600">{order.total.toLocaleString()} DZD</p>
+                    </td>
+                    <td className="px-8 py-6">
+                      <select
+                        aria-label={`Update status for order ${order.order_number}`}
+                        value={order.status}
+                        onChange={(e) => onUpdateStatus(order.id, e.target.value as any)}
+                        className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border outline-none cursor-pointer transition-colors ${order.status === 'Delivered' ? 'bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100' :
+                          order.status === 'Shipped' ? 'bg-indigo-50 text-indigo-600 border-indigo-100 hover:bg-indigo-100' :
+                            order.status === 'Cancelled' ? 'bg-rose-50 text-rose-600 border-rose-100 hover:bg-rose-100' :
+                              'bg-amber-50 text-amber-600 border-amber-100 hover:bg-amber-100'
+                          }`}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                    <td className="px-8 py-6 text-right">
+                      <button
+                        onClick={() => setSelectedOrder(order)}
+                        className="p-2 text-slate-400 hover:text-indigo-600 transition-colors"
+                        aria-label={`View order ${order.order_number}`}
+                      >
+                        <Eye size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Order Detail Modal */}
@@ -126,6 +130,7 @@ export const AdminOrderHistory: React.FC<AdminOrderHistoryProps> = ({ orders, on
               <button
                 onClick={() => setSelectedOrder(null)}
                 className="p-3 bg-white hover:bg-gray-100 rounded-2xl border border-gray-100 transition-colors"
+                aria-label="Close order details"
               >
                 <X size={20} />
               </button>
@@ -152,6 +157,7 @@ export const AdminOrderHistory: React.FC<AdminOrderHistoryProps> = ({ orders, on
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Current Status</p>
                     <select
+                      aria-label="Update order status"
                       value={selectedOrder.status}
                       onChange={(e) => {
                         const newStatus = e.target.value as any;
@@ -190,7 +196,7 @@ export const AdminOrderHistory: React.FC<AdminOrderHistoryProps> = ({ orders, on
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
-                              {item.image && <img src={item.image} className="w-full h-full object-cover" />}
+                              {item.image && <img src={item.image} alt={item.product_name} className="w-full h-full object-cover" />}
                             </div>
                             <span className="font-bold text-slate-900 text-sm line-clamp-1">{item.product_name}</span>
                           </div>

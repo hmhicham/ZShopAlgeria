@@ -32,28 +32,27 @@ export const Footer: React.FC<FooterProps> = ({ setView }) => {
     return (
         <footer id="footer" className="bg-[#003820] text-white">
             {/* Main Footer */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
                     {/* Brand */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 bg-gradient-to-br from-[#0A7D3E] to-[#FFD700] rounded-xl flex items-center justify-center">
-                                <ShoppingCart size={20} />
-                            </div>
-                            <div>
+                             <img src="/logo_1.png" alt="ZShop Algeria" className="h-12 w-auto object-contain" />
+                             <div>
                                 <h3 className="text-lg font-bold">
                                     <span className="text-[#FFD700]">ZShop</span>Algeria
                                 </h3>
                             </div>
+                            
                         </div>
                         <p className="text-white/60 text-xs leading-relaxed max-w-xs">
                             Votre destination shopping premium en Algérie. Qualité, rapidité et service client exceptionnel.
                         </p>
                         <div className="flex gap-2">
-                            <a href="#" className="w-8 h-8 bg-white/10 hover:bg-[#0A7D3E] rounded-lg flex items-center justify-center transition-all">
+                            <a href="#" aria-label="Facebook" className="w-8 h-8 bg-white/10 hover:bg-[#0A7D3E] rounded-lg flex items-center justify-center transition-all">
                                 <Facebook size={16} />
                             </a>
-                            <a href="#" className="w-8 h-8 bg-white/10 hover:bg-[#0A7D3E] rounded-lg flex items-center justify-center transition-all">
+                            <a href="#" aria-label="Instagram" className="w-8 h-8 bg-white/10 hover:bg-[#0A7D3E] rounded-lg flex items-center justify-center transition-all">
                                 <Instagram size={16} />
                             </a>
                         </div>
@@ -103,6 +102,7 @@ export const Footer: React.FC<FooterProps> = ({ setView }) => {
                             />
                             <button
                                 type="submit"
+                                aria-label="Subscribe to newsletter"
                                 className="absolute right-1 top-1 w-6 h-6 bg-[#FFD700] text-[#003820] rounded-md flex items-center justify-center hover:bg-white transition-colors"
                             >
                                 <Send size={12} />

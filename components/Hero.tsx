@@ -31,43 +31,73 @@ export const Hero: React.FC<HeroProps> = ({ content }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Content */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              Votre <span className="gradient-text-gold">Shopping</span><br />
-              <span className="arabic-decoration font-arabic text-3xl md:text-4xl lg:text-5xl">تسوق مميز</span> en Algérie
-            </h1>
-            <p className="text-xl md:text-2xl mb-10 font-light max-w-lg opacity-90 mx-auto lg:mx-0">
-              Découvrez des milliers de produits avec livraison express partout en Algérie
-            </p>
+          {/* Content - Professional Left Side */}
+          <div className="text-center lg:text-left space-y-8">
+            {/* Trust Badge */}
+            
 
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              <button className="bg-white text-[#0A7D3E] font-bold py-4 px-8 rounded-full hover:shadow-xl transition-all duration-300 glow-on-hover hover:scale-105 flex items-center gap-2">
-                <span>Boutique Maintenant</span>
-                <ArrowRight size={20} />
-              </button>
-              <button className="border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white hover:text-[#0A7D3E] transition-all duration-300 hover:scale-105 flex items-center gap-2">
-                <Play size={20} />
-                <span>Voir la Vidéo</span>
-              </button>
+            {/* Main Headline */}
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.1] tracking-tight">
+                <span className="block">Votre Shopping</span>
+                <span className="block mt-2">
+                  <span className="bg-gradient-to-r from-[#FFD700] via-[#FFA500] to-[#FFD700] bg-clip-text text-transparent">Premium</span>
+                  <span className="font-light text-white/90"> en Algérie</span>
+                </span>
+              </h1>
+              
+              {/* Arabic Tagline */}
+              
             </div>
 
-            {/* Customer Stats */}
-            <div className="mt-12 flex items-center justify-center lg:justify-start gap-4">
+            {/* Description */}
+            <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+              Découvrez notre collection exclusive de produits soigneusement sélectionnés. 
+              Qualité garantie, livraison rapide et service client disponible 24/7.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <button 
+                onClick={() => {
+                  const productGrid = document.getElementById('product-grid');
+                  if (productGrid) {
+                    productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                className="group relative bg-white text-[#003820] font-bold py-4 px-8 rounded-full hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3 overflow-hidden"
+              >
+                <span className="relative z-10">Explorer la Collection</span>
+                <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+              
+              {/*<button className="group border-2 border-white/30 text-white font-semibold py-4 px-8 rounded-full hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
+                <span>Nouveautés</span>
+                <span className="bg-[#FF6B35] text-white text-xs font-bold px-2 py-1 rounded-full">NEW</span>
+              </button>*/}
+            </div>
+
+
+
+            {/* Social Proof */}
+            <div className="flex items-center justify-center lg:justify-start gap-6 pt-6 border-t border-white/10">
               <div className="flex -space-x-3">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="" className="w-10 h-10 rounded-full border-2 border-white object-cover" />
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="" className="w-10 h-10 rounded-full border-2 border-white object-cover" />
-                <img src="https://images.unsplash.com/photo-1599566150163-29194dcabd36?w=100&h=100&fit=crop&crop=face" alt="" className="w-10 h-10 rounded-full border-2 border-white object-cover" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Client" className="w-12 h-12 rounded-full border-3 border-[#003820] object-cover" />
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face" alt="Client" className="w-12 h-12 rounded-full border-3 border-[#003820] object-cover" />
+                
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" alt="Client" className="w-12 h-12 rounded-full border-3 border-[#003820] object-cover" />
               </div>
               <div className="text-left">
-                <div className="flex text-[#FFD700]">
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" className="opacity-50" />
+                <div className="flex items-center gap-1 mb-1">
+                  <div className="flex text-[#FFD700]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} fill="currentColor" />
+                    ))}
+                  </div>
+                  <span className="text-white font-bold ml-2">4.9</span>
                 </div>
-                <p className="text-sm opacity-85">4.8/5 par 12K clients</p>
+                <p className="text-white/60 text-sm">Plus de <span className="text-white font-semibold">50,000 clients</span> satisfaits</p>
               </div>
             </div>
           </div>

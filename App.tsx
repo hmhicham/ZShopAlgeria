@@ -55,7 +55,7 @@ export default function App() {
   const [showInStockOnly, setShowInStockOnly] = useState(false);
 
   // Temporary filter states for manual application
-  const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, 10000000]);
+  const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, 1000]);
   const [tempShowInStockOnly, setTempShowInStockOnly] = useState(false);
 
   // New Navigation Filter States
@@ -270,7 +270,13 @@ export default function App() {
     setShowOnlyOffers(false);
     setActiveCategoryId('All');
     setSearchQuery('');
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    // Scroll directly to product grid after a short delay to allow render
+    setTimeout(() => {
+      const productGrid = document.getElementById('product-grid');
+      if (productGrid) {
+        productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const handleNavOffers = () => {
@@ -279,7 +285,13 @@ export default function App() {
     setShowOnlyNew(false);
     setActiveCategoryId('All');
     setSearchQuery('');
-    window.scrollTo({ top: 400, behavior: 'smooth' });
+    // Scroll directly to product grid after a short delay to allow render
+    setTimeout(() => {
+      const productGrid = document.getElementById('product-grid');
+      if (productGrid) {
+        productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const handleNavAbout = () => {
@@ -510,108 +522,139 @@ export default function App() {
             {view === 'profile' && user && <ProfileView user={user} onUpdate={setUser} setView={setView} />}
             {view === 'home' && (
               <>
-                <Hero content={{ title: "Elite Tech & Fashion", subtitle: "Dynamic shopping powered by real-time inventory management.", image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1000&h=1000&fit=crop" }} />
+                <Hero content={{ title: "Elite Tech & Fashion", subtitle: "Dynamic shopping powered by real-time inventory management.", image: "/logo_1.png" }} />
                 <section className="py-24 bg-white">
                   <div className="max-w-7xl mx-auto px-4">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-8">
-                      <h2 className="text-4xl font-extrabold text-slate-900">Dynamic Catalog<span className="text-indigo-600">.</span></h2>
-                      <div className="flex flex-wrap gap-2">
-                        <button onClick={() => setActiveCategoryId('All')} className={`px-6 py-2.5 rounded-2xl text-sm font-bold transition-all ${activeCategoryId === 'All' ? 'bg-slate-900 text-white shadow-lg' : 'bg-gray-50 text-slate-500 hover:bg-gray-100'}`}>All</button>
-                        {categories.map(cat => <button key={cat.id} onClick={() => setActiveCategoryId(cat.id)} className={`px-6 py-2.5 rounded-2xl text-sm font-bold transition-all ${activeCategoryId === cat.id ? 'bg-slate-900 text-white shadow-lg' : 'bg-gray-50 text-slate-500 hover:bg-gray-100'}`}>{cat.name}</button>)}
-                      </div>
-                    </div>
-
-                    {/* Filter Controls */}
-                    <div className="bg-gray-50/50 rounded-[2rem] p-6 mb-16 border border-gray-100/50 flex flex-wrap items-center gap-6">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-indigo-600 shadow-sm">
-                          <SlidersHorizontal size={18} />
-                        </div>
-                        <p className="text-sm font-bold text-slate-900">Filters</p>
-                      </div>
-
-                      <div className="h-8 w-px bg-gray-200 hidden md:block" />
-
-                      {/* Sort Selector */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Sort By</label>
-                        <select
-                          value={sortBy}
-                          onChange={(e) => setSortBy(e.target.value as any)}
-                          className="bg-white border border-gray-100 rounded-xl px-4 py-2 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20"
-                        >
-                          <option value="newest">Newest First</option>
-                          <option value="price-low">Price: Low to High</option>
-                          <option value="price-high">Price: High to Low</option>
-                        </select>
-                      </div>
-
-                      {/* Price Range */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Price Range (DZD)</label>
-                        <div className="flex items-center gap-3">
-                          <input
-                            type="number"
-                            placeholder="Min"
-                            value={tempPriceRange[0]}
-                            onChange={(e) => setTempPriceRange([Number(e.target.value), tempPriceRange[1]])}
-                            className="w-24 bg-white border border-gray-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none"
-                          />
-                          <span className="text-slate-300">-</span>
-                          <input
-                            type="number"
-                            placeholder="Max"
-                            value={tempPriceRange[1]}
-                            onChange={(e) => setTempPriceRange([tempPriceRange[0], Number(e.target.value)])}
-                            className="w-24 bg-white border border-gray-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none"
-                          />
-                        </div>
-                      </div>
-
-                      {/* In Stock Toggle */}
-                      <button
-                        onClick={() => setTempShowInStockOnly(!tempShowInStockOnly)}
-                        className={`mt-auto flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-all border ${tempShowInStockOnly
-                          ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
-                          : 'bg-white text-slate-500 border-gray-100 hover:border-gray-200'
-                          }`}
-                      >
-                        <CheckCircle2 size={16} />
-                        <span>In Stock Only</span>
-                      </button>
-
-                      {/* Apply Button */}
-                      <button
-                        onClick={() => {
-                          setPriceRange(tempPriceRange);
-                          setShowInStockOnly(tempShowInStockOnly);
-                        }}
-                        className="mt-auto px-8 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center gap-2"
-                      >
-                        Apply Filters
-                      </button>
-
-                      {/* Reset Filters */}
-                      {(activeCategoryId !== 'All' || searchQuery !== '' || sortBy !== 'newest' || tempPriceRange[0] !== 0 || tempPriceRange[1] !== 10000000 || tempShowInStockOnly || showOnlyNew || showOnlyOffers) && (
-                        <button
-                          onClick={() => {
-                            setActiveCategoryId('All');
-                            setSearchQuery('');
-                            setSortBy('newest');
-                            setPriceRange([0, 10000000]);
-                            setShowInStockOnly(false);
-                            setTempPriceRange([0, 10000000]);
-                            setTempShowInStockOnly(false);
-                            setShowOnlyNew(false);
-                            setShowOnlyOffers(false);
+                    {/* Header with Title and Categories */}
+                    <div className="mb-8">
+                      <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Dynamic Catalog<span className="text-indigo-600">.</span></h2>
+                      <div className="relative w-full">
+                        <div 
+                          className="flex gap-2 overflow-x-auto scroll-smooth pb-3 cursor-grab active:cursor-grabbing select-none"
+                          style={{ 
+                            scrollbarWidth: 'none', 
+                            msOverflowStyle: 'none',
+                            WebkitOverflowScrolling: 'touch'
                           }}
-                          className="mt-auto ml-auto text-xs font-bold text-indigo-600 hover:text-indigo-700 underline underline-offset-4"
+                          onMouseDown={(e) => {
+                            const ele = e.currentTarget;
+                            let startX = e.pageX - ele.offsetLeft;
+                            let scrollLeft = ele.scrollLeft;
+                            const handleMouseMove = (e: MouseEvent) => {
+                              const x = e.pageX - ele.offsetLeft;
+                              ele.scrollLeft = scrollLeft - (x - startX) * 2;
+                            };
+                            const handleMouseUp = () => {
+                              document.removeEventListener('mousemove', handleMouseMove);
+                              document.removeEventListener('mouseup', handleMouseUp);
+                            };
+                            document.addEventListener('mousemove', handleMouseMove);
+                            document.addEventListener('mouseup', handleMouseUp);
+                          }}
                         >
-                          Reset All Filters
-                        </button>
-                      )}
+                          <button onClick={() => setActiveCategoryId('All')} className={`flex-shrink-0 px-6 py-2.5 rounded-2xl text-sm font-bold transition-all whitespace-nowrap ${activeCategoryId === 'All' ? 'bg-slate-900 text-white shadow-lg' : 'bg-gray-50 text-slate-500 hover:bg-gray-100'}`}>All</button>
+                          {categories.map(cat => <button key={cat.id} onClick={() => setActiveCategoryId(cat.id)} className={`flex-shrink-0 px-6 py-2.5 rounded-2xl text-sm font-bold transition-all whitespace-nowrap ${activeCategoryId === cat.id ? 'bg-slate-900 text-white shadow-lg' : 'bg-gray-50 text-slate-500 hover:bg-gray-100'}`}>{cat.name}</button>)}
+                        </div>
+                        {/* Scroll indicator */}
+                        <div className="absolute right-0 top-0 bottom-3 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none" />
+                      </div>
                     </div>
-                    {products.length === 0 && isFetchingRef.current ? (
+
+                    {/* Main Content: Sidebar Left + Products Right */}
+                    <div className="flex flex-col lg:flex-row gap-8">
+                      {/* Left Sidebar - Filter Controls */}
+                      <aside className="w-full lg:w-72 flex-shrink-0">
+                        <div className="bg-gray-50/50 rounded-[2rem] p-6 border border-gray-100/50 sticky top-24">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-indigo-600 shadow-sm">
+                              <SlidersHorizontal size={18} />
+                            </div>
+                            <p className="text-sm font-bold text-slate-900">Filters</p>
+                          </div>
+
+                          {/* Sort Selector */}
+                          <div className="mb-6">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1 mb-2 block">Sort By</label>
+                            <select
+                              value={sortBy}
+                              onChange={(e) => setSortBy(e.target.value as any)}
+                              className="w-full bg-white border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20"
+                            >
+                              <option value="newest">Newest First</option>
+                              <option value="price-low">Price: Low to High</option>
+                              <option value="price-high">Price: High to Low</option>
+                            </select>
+                          </div>
+
+                          {/* Price Range */}
+                          <div className="mb-6">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1 mb-2 block">Price Range (DZD)</label>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="number"
+                                placeholder="Min"
+                                value={tempPriceRange[0]}
+                                onChange={(e) => setTempPriceRange([Number(e.target.value), tempPriceRange[1]])}
+                                className="w-24 bg-white border border-gray-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none"
+                              />
+                              <span className="text-slate-300">-</span>
+                              <input
+                                type="number"
+                                placeholder="Max"
+                                value={tempPriceRange[1]}
+                                onChange={(e) => setTempPriceRange([tempPriceRange[0], Number(e.target.value)])}
+                                className="w-24 bg-white border border-gray-100 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none"
+                              />
+                            </div>
+                          </div>
+
+                          {/* In Stock Toggle */}
+                          <button
+                            onClick={() => setTempShowInStockOnly(!tempShowInStockOnly)}
+                            className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all border mb-4 ${tempShowInStockOnly
+                              ? 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                              : 'bg-white text-slate-500 border-gray-100 hover:border-gray-200'
+                              }`}
+                          >
+                            <CheckCircle2 size={16} />
+                            <span>In Stock Only</span>
+                          </button>
+
+                          {/* Apply Button */}
+                          <button
+                            onClick={() => {
+                              setPriceRange(tempPriceRange);
+                              setShowInStockOnly(tempShowInStockOnly);
+                            }}
+                            className="w-full px-6 py-3 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 mb-3"
+                          >
+                            Apply Filters
+                          </button>
+
+                          {/* Reset Filters */}
+                          {(activeCategoryId !== 'All' || searchQuery !== '' || sortBy !== 'newest' || tempPriceRange[0] !== 0 || tempPriceRange[1] !== 1000 || tempShowInStockOnly || showOnlyNew || showOnlyOffers) && (
+                            <button
+                              onClick={() => {
+                                setActiveCategoryId('All');
+                                setSearchQuery('');
+                                setSortBy('newest');
+                                setPriceRange([0, 1000]);
+                                setShowInStockOnly(false);
+                                setTempPriceRange([0, 1000]);
+                                setTempShowInStockOnly(false);
+                                setShowOnlyNew(false);
+                                setShowOnlyOffers(false);
+                              }}
+                              className="w-full text-xs font-bold text-indigo-600 hover:text-indigo-700 underline underline-offset-4 py-2"
+                            >
+                              Reset All Filters
+                            </button>
+                          )}
+                        </div>
+                      </aside>
+
+                      {/* Right Content - Products */}
+                      <div className="flex-1">{products.length === 0 && isFetchingRef.current ? (
                       <div className="flex flex-col items-center justify-center py-32 gap-4">
                         <Loader2 size={40} className="animate-spin text-indigo-600" />
                         <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading Collection...</p>
@@ -621,8 +664,8 @@ export default function App() {
                         <p className="text-slate-400 font-bold">No products found in this category.</p>
                       </div>
                     ) : (
-                      <div className="space-y-12">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                      <div className="space-y-12" id="product-grid">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-8">
                           {paginatedProducts.map(p => (
                             <div key={p.id} onClick={() => { setSelectedProduct(p); setView('product-detail'); window.scrollTo(0, 0); }}>
                               <ProductCard product={p} isWishlisted={wishlist.some(w => w.id === p.id)} onToggleWishlist={() => handleToggleWishlist(p)} onAddToCart={handleAddToCart} />
@@ -667,7 +710,9 @@ export default function App() {
                       </div>
                     )}
                   </div>
-                </section>
+                </div>
+              </div>
+            </section>
               </>
             )}
             {view === 'product-detail' && selectedProduct && (

@@ -76,82 +76,84 @@ export const ManageUsers: React.FC = () => {
             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading User Records...</p>
           </div>
         ) : (
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">User Profile</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Contact Details</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Address</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Role</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filteredUsers.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-8 py-20 text-center text-slate-400 italic">No users matching your search.</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[900px]">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-100">
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">User Profile</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Contact Details</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Address</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Role</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
                 </tr>
-              ) : (
-                filteredUsers.map((user) => (
-                  <tr key={user.db_id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-indigo-50 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-white shadow-sm shrink-0">
-                          {user.avatar ? (
-                            <img src={user.avatar} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <UserIcon className="text-indigo-300" size={24} />
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {filteredUsers.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="px-8 py-20 text-center text-slate-400 italic">No users matching your search.</td>
+                  </tr>
+                ) : (
+                  filteredUsers.map((user) => (
+                    <tr key={user.db_id} className="hover:bg-gray-50/50 transition-colors group">
+                      <td className="px-8 py-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-indigo-50 rounded-2xl overflow-hidden flex items-center justify-center border-2 border-white shadow-sm shrink-0">
+                            {user.avatar ? (
+                              <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <UserIcon className="text-indigo-300" size={24} />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-900">{user.name}</p>
+                            <p className="text-xs text-slate-400">Joined {new Date(user.created_at || '').toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 text-sm text-slate-600">
+                            <Mail size={14} className="text-slate-400" />
+                            <span>{user.email}</span>
+                          </div>
+                          {user.phone && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                              <Phone size={14} className="text-slate-400" />
+                              <span>{user.phone}</span>
+                            </div>
                           )}
                         </div>
-                        <div>
-                          <p className="font-bold text-slate-900">{user.name}</p>
-                          <p className="text-xs text-slate-400">Joined {new Date(user.created_at || '').toLocaleDateString()}</p>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="max-w-[200px] truncate text-sm text-slate-600 flex items-center gap-2">
+                          <MapPin size={14} className="text-slate-400 shrink-0" />
+                          <span>{user.address || 'Not provided'}</span>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-slate-600">
-                          <Mail size={14} className="text-slate-400" />
-                          <span>{user.email}</span>
-                        </div>
-                        {user.phone && (
-                          <div className="flex items-center gap-2 text-sm text-slate-600">
-                            <Phone size={14} className="text-slate-400" />
-                            <span>{user.phone}</span>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="max-w-[200px] truncate text-sm text-slate-600 flex items-center gap-2">
-                        <MapPin size={14} className="text-slate-400 shrink-0" />
-                        <span>{user.address || 'Not provided'}</span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                        user.role === 'admin' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-gray-50 text-slate-500 border-gray-100'
-                      }`}>
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="px-8 py-6 text-right">
-                      <button 
-                        onClick={() => toggleRole(user)}
-                        className={`p-2.5 rounded-xl transition-all ${
-                          user.role === 'admin' ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
-                        }`}
-                        title={user.role === 'admin' ? "Revoke Admin Access" : "Grant Admin Access"}
-                      >
-                        <Shield size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="px-8 py-6">
+                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                          user.role === 'admin' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-gray-50 text-slate-500 border-gray-100'
+                        }`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <button 
+                          onClick={() => toggleRole(user)}
+                          className={`p-2.5 rounded-xl transition-all ${
+                            user.role === 'admin' ? 'bg-rose-50 text-rose-600 hover:bg-rose-100' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                          }`}
+                          aria-label={user.role === 'admin' ? "Revoke Admin Access" : "Grant Admin Access"}
+                        >
+                          <Shield size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

@@ -91,28 +91,30 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16">
+    <div className="max-w-7xl mx-auto px-4 py-8 sm:py-16">
       <button
         onClick={() => setView('home')}
-        className="flex items-center gap-2 text-slate-500 hover:text-[#0A7D3E] font-black mb-12 transition-all group px-4 py-2 hover:bg-slate-50 rounded-xl w-fit"
+        className="flex items-center gap-2 text-slate-500 hover:text-[#0A7D3E] font-black mb-8 sm:mb-12 transition-all group px-4 py-2 hover:bg-slate-50 rounded-xl w-fit text-sm sm:text-base"
       >
         <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-        <span className="text-sm uppercase tracking-widest">Retourner au Magasin</span>
+        <span className="uppercase tracking-widest hidden sm:inline">Retourner au Magasin</span>
+        <span className="uppercase tracking-widest sm:hidden">Retour</span>
       </button>
 
       <div className="grid lg:grid-cols-5 gap-12 items-start">
         {/* Left Column: Form (3/5) */}
-        <div className="lg:col-span-3 space-y-8">
-          <div className="bg-white rounded-[3rem] p-10 shadow-2xl shadow-slate-100 border border-gray-100 relative overflow-hidden">
+        <div className="lg:col-span-3 space-y-6 sm:space-y-8">
+          <div className="bg-white rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 shadow-2xl shadow-slate-100 border border-gray-100 relative overflow-hidden">
             {/* Decorative Element */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#0A7D3E]/5 rounded-bl-[5rem] -mr-8 -mt-8" />
 
-            <div className="flex items-center justify-between mb-12 relative">
-              <h2 className="text-3xl font-black text-slate-900 flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#0A7D3E] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-green-100">
-                  <MapPin size={28} />
+            <div className="flex items-center justify-between mb-8 sm:mb-12 relative">
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 flex items-center gap-3 sm:gap-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#0A7D3E] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-green-100">
+                  <MapPin size={24} className="sm:w-7 sm:h-7" />
                 </div>
-                Livraison
+                <span className="hidden sm:inline">Livraison</span>
+                <span className="sm:hidden">Livraison</span>
               </h2>
               <div className="px-6 py-2.5 bg-slate-50 rounded-2xl border border-slate-100 hidden sm:block">
                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-3">
@@ -122,8 +124,8 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
               </div>
             </div>
 
-            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-10">
-              <div className="grid md:grid-cols-2 gap-10">
+            <form id="checkout-form" onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-10">
                 <div className="space-y-3">
                   <label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-[0.15em]">Nom Complet</label>
                   <div className="relative group">
@@ -135,9 +137,9 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                         if (errors.name) setErrors({ ...errors, name: '' });
                       }}
                       placeholder="Ex: Hicham Huli"
-                      className={`w-full bg-slate-50 border-2 ${errors.name ? 'border-rose-100 focus:border-rose-500 ring-rose-50' : 'border-slate-50 focus:border-[#0A7D3E] ring-green-100/50'} rounded-[1.5rem] py-4.5 pl-13 pr-6 focus:ring-8 outline-none transition-all font-bold text-slate-900 placeholder:text-slate-300 text-lg`}
+                      className={`w-full bg-slate-50 border-2 ${errors.name ? 'border-rose-100 focus:border-rose-500 ring-rose-50' : 'border-slate-50 focus:border-[#0A7D3E] ring-green-100/50'} rounded-[1.5rem] py-4 pl-12 sm:pl-13 pr-4 sm:pr-6 focus:ring-4 sm:focus:ring-8 outline-none transition-all font-bold text-slate-900 placeholder:text-slate-300 text-base sm:text-lg`}
                     />
-                    <User className={`absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${errors.name ? 'text-rose-500' : 'text-slate-300 group-focus-within:text-[#0A7D3E]'}`} size={22} />
+                    <User className={`absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 transition-colors ${errors.name ? 'text-rose-500' : 'text-slate-300 group-focus-within:text-[#0A7D3E]'}`} size={20} />
                   </div>
                   {errors.name && (
                     <div className="flex items-center gap-2 text-rose-600 text-[10px] font-black uppercase tracking-wider ml-1 bg-rose-50 py-2.5 px-4 rounded-xl border border-rose-100 animate-shake">
@@ -158,9 +160,9 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                         if (errors.phone) setErrors({ ...errors, phone: '' });
                       }}
                       placeholder="06XXXXXXXX"
-                      className={`w-full bg-slate-50 border-2 ${errors.phone ? 'border-rose-100 focus:border-rose-500 ring-rose-50' : 'border-slate-50 focus:border-[#0A7D3E] ring-green-100/50'} rounded-[1.5rem] py-4.5 pl-13 pr-6 focus:ring-8 outline-none transition-all font-bold text-slate-900 placeholder:text-slate-300 text-lg`}
+                      className={`w-full bg-slate-50 border-2 ${errors.phone ? 'border-rose-100 focus:border-rose-500 ring-rose-50' : 'border-slate-50 focus:border-[#0A7D3E] ring-green-100/50'} rounded-[1.5rem] py-4 pl-12 sm:pl-13 pr-4 sm:pr-6 focus:ring-4 sm:focus:ring-8 outline-none transition-all font-bold text-slate-900 placeholder:text-slate-300 text-base sm:text-lg`}
                     />
-                    <Phone className={`absolute left-5 top-1/2 -translate-y-1/2 transition-colors ${errors.phone ? 'text-rose-500' : 'text-slate-300 group-focus-within:text-[#0A7D3E]'}`} size={22} />
+                    <Phone className={`absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 transition-colors ${errors.phone ? 'text-rose-500' : 'text-slate-300 group-focus-within:text-[#0A7D3E]'}`} size={20} />
                   </div>
                   {errors.phone && (
                     <div className="flex items-center gap-2 text-rose-600 text-[10px] font-black uppercase tracking-wider ml-1 bg-rose-50 py-2.5 px-4 rounded-xl border border-rose-100 animate-shake">
@@ -175,6 +177,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 <label className="text-xs font-black text-slate-500 ml-1 uppercase tracking-[0.15em]">Wilaya de Destination</label>
                 <div className="relative border-2 border-slate-50 rounded-[1.5rem] overflow-hidden focus-within:border-[#0A7D3E] focus-within:ring-8 focus-within:ring-green-100/50 transition-all bg-slate-50">
                   <select
+                    aria-label="Wilaya de Destination"
                     value={formData.wilaya}
                     onChange={e => setFormData({ ...formData, wilaya: e.target.value })}
                     className="w-full bg-transparent py-4.5 px-6 outline-none appearance-none cursor-pointer font-black text-slate-900 text-lg"
@@ -198,17 +201,17 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 />
               </div>
 
-              <div className="pt-12 border-t border-slate-50">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-10 h-1.5 bg-[#0A7D3E] rounded-full" />
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">Méthode de Paiement</h3>
+              <div className="pt-8 sm:pt-12 border-t border-slate-50">
+                <div className="flex items-center gap-4 mb-6 sm:mb-8">
+                  <div className="w-8 sm:w-10 h-1.5 bg-[#0A7D3E] rounded-full" />
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Méthode de Paiement</h3>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="p-8 border-2 border-[#0A7D3E] bg-emerald-50 rounded-[2rem] flex items-center transition-all shadow-xl shadow-emerald-100/30 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-100 opacity-40 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
-                    <div className="flex items-center gap-6 relative">
-                      <div className="w-14 h-14 bg-[#0A7D3E] text-white rounded-2xl flex items-center justify-center shadow-lg">
-                        <CheckCircle2 size={28} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="p-6 sm:p-8 border-2 border-[#0A7D3E] bg-emerald-50 rounded-[1.5rem] sm:rounded-[2rem] flex items-center transition-all shadow-xl shadow-emerald-100/30 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-20 sm:w-24 h-20 sm:h-24 bg-emerald-100 opacity-40 rounded-bl-full -mr-6 -mt-6 sm:-mr-8 sm:-mt-8 transition-transform group-hover:scale-110" />
+                    <div className="flex items-center gap-4 sm:gap-6 relative">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#0A7D3E] text-white rounded-2xl flex items-center justify-center shadow-lg">
+                        <CheckCircle2 size={24} className="sm:w-7 sm:h-7" />
                       </div>
                       <div>
                         <span className="font-black text-slate-900 block text-lg">Cash on Delivery</span>
@@ -216,10 +219,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="p-8 border-2 border-slate-100 bg-slate-50/50 rounded-[2rem] flex items-center opacity-40 grayscale pointer-events-none">
-                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center">
-                        <CreditCard size={28} />
+                  <div className="p-6 sm:p-8 border-2 border-slate-100 bg-slate-50/50 rounded-[1.5rem] sm:rounded-[2rem] flex items-center opacity-40 grayscale pointer-events-none">
+                    <div className="flex items-center gap-4 sm:gap-6">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-slate-200 text-slate-400 rounded-2xl flex items-center justify-center">
+                        <CreditCard size={24} className="sm:w-7 sm:h-7" />
                       </div>
                       <div>
                         <span className="font-black text-slate-500 block text-lg">Carte Bancaire</span>
@@ -234,13 +237,14 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
         </div>
 
         {/* Right Column: Order Summary (2/5) */}
-        <div className="lg:col-span-2 space-y-8 sticky top-32">
-          <div className="bg-slate-900 text-white rounded-[3rem] p-10 shadow-2xl shadow-slate-900/20 border border-white/5 overflow-hidden relative">
+        <div className="lg:col-span-2 space-y-6 sm:space-y-8 lg:sticky lg:top-32">
+          <div className="bg-slate-900 text-white rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 shadow-2xl shadow-slate-900/20 border border-white/5 overflow-hidden relative">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 w-48 h-48 bg-[#0A7D3E] opacity-20 blur-[100px] -mr-24 -mt-24" />
 
-            <h3 className="text-2xl font-black mb-10 flex items-center justify-between relative">
-              Récapitulatif
+            <h3 className="text-xl sm:text-2xl font-black mb-6 sm:mb-10 flex items-center justify-between relative">
+              <span className="hidden sm:inline">Récapitulatif</span>
+              <span className="sm:hidden">Panier</span>
               <span className="text-[10px] py-1.5 px-4 bg-white/10 rounded-full font-black text-slate-400 tracking-[0.2em] uppercase">
                 {items.reduce((acc, i) => acc + i.quantity, 0)} Produits
               </span>
@@ -294,17 +298,17 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
             </div>
 
             {/* Scrollable Items List */}
-            <div className="space-y-6 mb-12 max-h-[380px] overflow-y-auto pr-4 custom-scrollbar relative">
+            <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12 max-h-[300px] sm:max-h-[380px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar relative">
               {items.map(item => (
-                <div key={item.id} className="flex gap-6 pb-6 border-b border-white/5 last:border-0 last:pb-0 group">
-                  <div className="w-24 h-24 rounded-[1.5rem] overflow-hidden flex-shrink-0 bg-white/5 border border-white/10 group-hover:border-white/20 transition-all p-1">
-                    <img src={item.image} className="w-full h-full object-cover rounded-[1.2rem] transition-transform duration-700 group-hover:scale-115" />
+                <div key={item.id} className="flex gap-4 sm:gap-6 pb-4 sm:pb-6 border-b border-white/5 last:border-0 last:pb-0 group">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[1.2rem] sm:rounded-[1.5rem] overflow-hidden flex-shrink-0 bg-white/5 border border-white/10 group-hover:border-white/20 transition-all p-1">
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-[1rem] sm:rounded-[1.2rem] transition-transform duration-700 group-hover:scale-115" />
                   </div>
                   <div className="flex-1 min-w-0 flex flex-col justify-center gap-2">
-                    <h4 className="font-black text-sm uppercase tracking-tight leading-tight group-hover:text-[#FFD700] transition-colors">{item.name}</h4>
+                    <h4 className="font-black text-xs sm:text-sm uppercase tracking-tight leading-tight group-hover:text-[#FFD700] transition-colors line-clamp-2">{item.name}</h4>
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest bg-white/5 py-1.5 px-3 rounded-lg border border-white/5">QTÉ: {item.quantity}</span>
-                      <span className="text-sm font-black text-emerald-400 tracking-tighter">{(item.price * item.quantity).toLocaleString()} DA</span>
+                      <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest bg-white/5 py-1 px-2 sm:py-1.5 sm:px-3 rounded-lg border border-white/5">QTÉ: {item.quantity}</span>
+                      <span className="text-xs sm:text-sm font-black text-emerald-400 tracking-tighter">{(item.price * item.quantity).toLocaleString()} DA</span>
                     </div>
                   </div>
                 </div>
@@ -352,9 +356,10 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
               <button
                 form="checkout-form"
                 type="submit"
-                className="w-full mt-12 py-6 bg-[#0A7D3E] hover:bg-emerald-600 text-white rounded-[1.8rem] font-black text-lg uppercase tracking-[0.2em] shadow-2xl shadow-green-900/50 transition-all active:scale-95 flex items-center justify-center gap-4 group border-b-[6px] border-emerald-800"
+                className="w-full mt-8 sm:mt-12 py-5 sm:py-6 bg-[#0A7D3E] hover:bg-emerald-600 text-white rounded-[1.5rem] sm:rounded-[1.8rem] font-black text-base sm:text-lg uppercase tracking-[0.15em] sm:tracking-[0.2em] shadow-2xl shadow-green-900/50 transition-all active:scale-95 flex items-center justify-center gap-3 sm:gap-4 group border-b-[4px] sm:border-b-[6px] border-emerald-800"
               >
-                Confirmer la commande
+                <span className="hidden sm:inline">Confirmer la commande</span>
+                <span className="sm:hidden">Commander</span>
                 <ChevronRight className="group-hover:translate-x-1.5 transition-transform" />
               </button>
 

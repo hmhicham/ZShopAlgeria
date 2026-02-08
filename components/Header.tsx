@@ -66,19 +66,8 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex items-center gap-6">
-              <button onClick={() => setView('home')} className="flex items-center group">
-                <div className="relative">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#0A7D3E] to-[#003820] rounded-xl flex items-center justify-center text-white mr-3 group-hover:scale-105 transition-transform duration-300 shadow-lg glow-on-hover">
-                    <ShoppingCart size={24} />
-                  </div>
-                  <span className="absolute -bottom-1 -right-1 bg-[#FF6B35] text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">DZ</span>
-                </div>
-                <div className="hidden sm:block">
-                  <h1 className="text-2xl font-bold">
-                    <span className="gradient-text">ZShop</span>
-                    <span className="text-[#003820]">Algeria</span>
-                  </h1>
-                </div>
+              <button onClick={() => { setView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center group">
+                <img src="/logo_1.png" alt="ZShop Algeria" className="h-16 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
               </button>
 
               {/* Desktop Nav */}
@@ -121,16 +110,8 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               )}
 
-              <button
-                onClick={onOpenAI}
-                className="hidden sm:flex items-center gap-2 bg-[#0A7D3E]/10 text-[#0A7D3E] px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-[#0A7D3E]/20 transition-colors"
-              >
-                <Sparkles size={16} className="animate-pulse" />
-                <span>AI Shopper</span>
-              </button>
-
               {/* Wishlist */}
-              <button
+               <button
                 onClick={() => setView('wishlist')}
                 className="relative w-11 h-11 rounded-full bg-gray-100 flex items-center justify-center shadow-sm hover:bg-gray-200 transition text-gray-700 hover:text-[#0A7D3E]"
               >
@@ -139,7 +120,6 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="absolute -top-1 -right-1 bg-[#FF6B35] text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">{wishlistCount}</span>
                 )}
               </button>
-
               {/* Cart */}
               <button
                 onClick={onOpenCart}
@@ -238,15 +218,30 @@ export const Header: React.FC<HeaderProps> = ({
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
             </div>
             <nav className="flex flex-col gap-2">
-              {['Collection', 'Nouveautés', 'Offres', 'À propos'].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => { setView('home'); setIsMobileMenuOpen(false); }}
-                  className="py-3 px-4 text-left font-medium text-slate-700 hover:bg-gray-50 rounded-xl"
-                >
-                  {item}
-                </button>
-              ))}
+              <button
+                onClick={() => { onNavCollection(); setIsMobileMenuOpen(false); }}
+                className="py-3 px-4 text-left font-medium text-slate-700 hover:bg-gray-50 rounded-xl"
+              >
+                Collection
+              </button>
+              <button
+                onClick={() => { onNavNew(); setIsMobileMenuOpen(false); }}
+                className="py-3 px-4 text-left font-medium text-slate-700 hover:bg-gray-50 rounded-xl"
+              >
+                Nouveautés
+              </button>
+              <button
+                onClick={() => { onNavOffers(); setIsMobileMenuOpen(false); }}
+                className="py-3 px-4 text-left font-medium text-slate-700 hover:bg-gray-50 rounded-xl"
+              >
+                Offres
+              </button>
+              <button
+                onClick={() => { onNavAbout(); setIsMobileMenuOpen(false); }}
+                className="py-3 px-4 text-left font-medium text-slate-700 hover:bg-gray-50 rounded-xl"
+              >
+                À propos
+              </button>
             </nav>
           </div>
         )}

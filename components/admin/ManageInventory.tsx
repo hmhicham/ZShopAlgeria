@@ -47,6 +47,7 @@ export const ManageInventory: React.FC<ManageInventoryProps> = ({ products, onDe
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           </div>
           <select
+            aria-label="Sort products by"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
             className="bg-white border border-gray-200 rounded-xl py-2.5 px-4 text-sm font-bold text-slate-600 outline-none"
@@ -70,69 +71,73 @@ export const ManageInventory: React.FC<ManageInventoryProps> = ({ products, onDe
             <p className="font-bold">No products found matching your search.</p>
           </div>
         ) : (
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Product</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Category</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Price</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Stock</th>
-                <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filteredAndSortedProducts.map((p) => (
-                <tr key={p.id} className="hover:bg-gray-50/50 transition-colors group">
-                  <td className="px-8 py-6">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-                        <img src={p.image} alt="" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="font-bold text-slate-900 truncate max-w-[200px]">{p.name}</span>
-                        <span className="text-[10px] font-mono font-bold text-slate-400">{p.sku}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <span className="text-xs font-bold text-slate-500 bg-gray-100 px-3 py-1 rounded-full">{p.category || `Cat ${p.category_id}`}</span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <span className="font-black text-indigo-600">{p.price.toLocaleString()} DZD</span>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className={`inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${p.stock_quantity > 10 ? 'bg-emerald-50 text-emerald-600' :
-                        p.stock_quantity > 0 ? 'bg-amber-50 text-amber-600' :
-                          'bg-rose-50 text-rose-600'
-                      }`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${p.stock_quantity > 10 ? 'bg-emerald-500' :
-                          p.stock_quantity > 0 ? 'bg-amber-500' :
-                            'bg-rose-500'
-                        }`} />
-                      {p.stock_quantity > 10 ? 'In Stock' : p.stock_quantity > 0 ? 'Low Stock' : 'Out of Stock'}
-                      <span className="ml-1 opacity-60">({p.stock_quantity})</span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => onEdit(p)}
-                        className="p-2 text-slate-400 hover:text-indigo-600 transition-colors bg-gray-50 rounded-lg"
-                      >
-                        <Edit3 size={18} />
-                      </button>
-                      <button
-                        onClick={() => onDelete(p.id)}
-                        className="p-2 text-slate-300 hover:text-rose-500 transition-colors bg-gray-50 rounded-lg"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left min-w-[800px]">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-100">
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Product</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Category</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Price</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Stock</th>
+                  <th className="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {filteredAndSortedProducts.map((p) => (
+                  <tr key={p.id} className="hover:bg-gray-50/50 transition-colors group">
+                    <td className="px-8 py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+                          <img src={p.image} alt="" className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-slate-900 truncate max-w-[200px]">{p.name}</span>
+                          <span className="text-[10px] font-mono font-bold text-slate-400">{p.sku}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <span className="text-xs font-bold text-slate-500 bg-gray-100 px-3 py-1 rounded-full">{p.category || `Cat ${p.category_id}`}</span>
+                    </td>
+                    <td className="px-8 py-6">
+                      <span className="font-black text-indigo-600">{p.price.toLocaleString()} DZD</span>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className={`inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${p.stock_quantity > 10 ? 'bg-emerald-50 text-emerald-600' :
+                          p.stock_quantity > 0 ? 'bg-amber-50 text-amber-600' :
+                            'bg-rose-50 text-rose-600'
+                        }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${p.stock_quantity > 10 ? 'bg-emerald-500' :
+                            p.stock_quantity > 0 ? 'bg-amber-500' :
+                              'bg-rose-500'
+                          }`} />
+                        {p.stock_quantity > 10 ? 'In Stock' : p.stock_quantity > 0 ? 'Low Stock' : 'Out of Stock'}
+                        <span className="ml-1 opacity-60">({p.stock_quantity})</span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => onEdit(p)}
+                          className="p-2 text-slate-400 hover:text-indigo-600 transition-colors bg-gray-50 rounded-lg"
+                          aria-label={`Edit ${p.name}`}
+                        >
+                          <Edit3 size={18} />
+                        </button>
+                        <button
+                          onClick={() => onDelete(p.id)}
+                          className="p-2 text-slate-300 hover:text-rose-500 transition-colors bg-gray-50 rounded-lg"
+                          aria-label={`Delete ${p.name}`}
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

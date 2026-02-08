@@ -189,7 +189,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({ orders, products }) => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[700px]">
             <thead>
               <tr className="border-b border-gray-50">
                 <th className="pb-4 text-[10px] font-black text-slate-400 uppercase tracking-widest pl-4">Produit</th>
@@ -203,7 +203,7 @@ export const Analytics: React.FC<AnalyticsProps> = ({ orders, products }) => {
                 <tr key={i} className="group hover:bg-slate-50/50 transition-colors">
                   <td className="py-5 pl-4 flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-100 border border-gray-100 flex-shrink-0">
-                      <img src={p.image} className="w-full h-full object-cover" alt="" />
+                      <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                     </div>
                     <span className="font-bold text-slate-900 tracking-tight">{p.name}</span>
                   </td>
