@@ -65,13 +65,13 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Actions */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <button 
+            {/*<button 
               onClick={onOpenAI}
               className="hidden sm:flex items-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-100 transition-colors"
             >
               <Sparkles size={16} className="animate-pulse" />
               <span>AI Shopper</span>
-            </button>
+            </button> */}
 
             <div className="h-6 w-[1px] bg-gray-200 mx-2 hidden sm:block"></div>
 
