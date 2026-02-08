@@ -294,7 +294,7 @@ export default function App() {
     setSearchQuery('');
     // Scroll directly to product grid after a short delay to allow render
     setTimeout(() => {
-      const productGrid = document.getElementById('product-grid');
+      const productGrid = document.getElementById('');
       if (productGrid) {
         productGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -552,12 +552,7 @@ export default function App() {
                       <h2 className="text-4xl font-extrabold text-slate-900 mb-4">Dynamic Catalog<span className="text-indigo-600">.</span></h2>
                       <div className="relative w-full">
                         <div 
-                          className="flex gap-2 overflow-x-auto scroll-smooth pb-3 cursor-grab active:cursor-grabbing select-none"
-                          style={{ 
-                            scrollbarWidth: 'none', 
-                            msOverflowStyle: 'none',
-                            WebkitOverflowScrolling: 'touch'
-                          }}
+                          className="flex gap-2 overflow-x-auto scroll-smooth pb-3 cursor-grab active:cursor-grabbing select-none no-scrollbar"
                           onMouseDown={(e) => {
                             const ele = e.currentTarget;
                             let startX = e.pageX - ele.offsetLeft;
@@ -601,6 +596,7 @@ export default function App() {
                               value={sortBy}
                               onChange={(e) => setSortBy(e.target.value as any)}
                               className="w-full bg-white border border-gray-100 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-indigo-500/20"
+                              aria-label="Sort products by"
                             >
                               <option value="newest">Newest First</option>
                               <option value="price-low">Price: Low to High</option>
@@ -649,6 +645,7 @@ export default function App() {
                               setShowInStockOnly(tempShowInStockOnly);
                             }}
                             className="w-full px-6 py-3 bg-indigo-600 text-white rounded-xl text-sm font-black shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95 transition-all flex items-center justify-center gap-2 mb-3"
+                            aria-label="Apply selected filters"
                           >
                             Apply Filters
                           </button>
@@ -668,6 +665,7 @@ export default function App() {
                                 setShowOnlyOffers(false);
                               }}
                               className="w-full text-xs font-bold text-indigo-600 hover:text-indigo-700 underline underline-offset-4 py-2"
+                              aria-label="Reset all filters"
                             >
                               Reset All Filters
                             </button>
@@ -701,6 +699,7 @@ export default function App() {
                               disabled={currentPage === 1}
                               onClick={() => { setCurrentPage(prev => prev - 1); window.scrollTo({ top: 400, behavior: 'smooth' }); }}
                               className="p-2.5 rounded-xl border border-gray-100 text-slate-500 hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                              aria-label="Previous page"
                             >
                               <ChevronLeft size={20} />
                             </button>
@@ -724,6 +723,7 @@ export default function App() {
                               disabled={currentPage === totalPages}
                               onClick={() => { setCurrentPage(prev => prev + 1); window.scrollTo({ top: 400, behavior: 'smooth' }); }}
                               className="p-2.5 rounded-xl border border-gray-100 text-slate-500 hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                              aria-label="Next page"
                             >
                               <ChevronRight size={20} />
                             </button>
